@@ -1,0 +1,32 @@
+{
+  "name": "nextjs-typescript-sample",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 5000",
+    "build": "next build",
+    "start": "next start -p 5000",
+    "prod": "pm2 start npm --name 'next-prod' -- run start",
+    "stop": "pm2 stop next-prod",
+    "restart": "pm2 restart next-prod",
+    "delete": "pm2 delete next-prod",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-rnd": "^10.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "20.12.12",
+    "@types/react": "18.3.5",
+    "@types/react-dom": "18.3.0",
+    "eslint": "8.57.0",
+    "eslint-config-next": "^14.2.35",
+    "typescript": "5.5.4"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  }
+}

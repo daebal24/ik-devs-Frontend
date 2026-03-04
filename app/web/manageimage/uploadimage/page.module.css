@@ -1,0 +1,58 @@
+.mainWrapper {
+  width: 100%;
+  height:100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* CSS GRID 레이아웃 */
+.gridContainer {
+  display: grid;
+  height:100%;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 280px 280px 100px;
+  gap: 4%;
+}
+
+/* 카드 공통 스타일 */
+.card {
+  background: #3f3f3f;
+  border-radius: 18px;
+  padding: 20px;
+  color: #fff;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 각각의 카드 크기 조절 — 이미지 레이아웃 재현 */
+.card1 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.card2 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.card3 {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.card4 {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.card5 {
+  grid-column: span 3;
+  grid-row: span 1;
+}
+
+.imagePreviewSection{
+  width: 50%;
+  height: 50%;
+}

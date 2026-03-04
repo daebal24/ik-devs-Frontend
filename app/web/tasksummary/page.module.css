@@ -1,0 +1,402 @@
+/* app/web/tasksummary/page.module.css */
+
+.page {
+  color: #ffffff;
+  margin: 0 auto;
+  padding: 24px;
+  width: 96%;
+  height: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Noto Sans KR", Arial;
+  border-radius: 1%;
+  background-color: #d0deff;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.savebutton {
+  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 200, 200, 0.4);
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+  display: flex;
+  margin-left: auto;
+  margin-right: 2%;
+  cursor: pointer;
+}
+
+.savebutton:hover {
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 22px;
+  color: #000000;
+}
+
+.title p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #36353b;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
+}
+
+.card {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(160, 160, 160, 0.25);
+  border-radius: 14px;
+  overflow: hidden;
+  width: 97%;
+}
+
+.hd {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.h {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(180, 180, 180, 0.35);
+  background: rgba(0, 0, 0, 0.2);
+  color: #cccccc;
+}
+
+.bd {
+  padding: 14px 16px;
+}
+
+/* ===== 공통 UI ===== */
+.panel {
+  border: 1px solid rgba(160, 160, 160, 0.22);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px;
+}
+
+.panelTitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.formRow {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input {
+  width: 90%;
+  min-width: 0;
+  padding: 10px;
+  font-size: 13px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+.input::placeholder{
+  color:rgb(209, 209, 209);
+}
+
+.input:focus {
+  border-color: rgba(220, 220, 220, 0.6);
+}
+
+.textarea {
+  width: 90%;
+  min-height: 40px;
+  margin-top: 5px;
+  padding: 5px;
+  font-size: 13px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  outline: none;
+  resize: vertical;
+}
+.textarea::placeholder{
+  color:rgb(209, 209, 209);
+}
+
+
+
+.textarea:focus {
+  border-color: rgba(220, 220, 220, 0.6);
+}
+
+/* 수정 모드 아닐 때 입력 비활성화 표현 */
+.input:disabled,
+.yearInput:disabled,
+
+
+/* 수정 버튼 */
+.btnGhost {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  font-size: 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  background: rgba(0, 0, 0, 0.2);
+  color: #e0e0e0;
+  cursor: pointer;
+}
+
+.btnGhost:hover {
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+.btn {
+  flex: 0 0 auto;
+  padding: 10px 12px;
+  font-size: 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  background: rgba(0, 0, 0, 0.22);
+  color: #e8e8e8;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: rgba(0, 0, 0, 0.38);
+  color: #ffffff;
+}
+
+.btnDanger {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  background: rgba(248, 113, 113, 0.15);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.btnDanger:hover {
+  background: rgba(248, 113, 113, 0.25);
+}
+
+.btnDangerGhost {
+  flex: 0 0 auto;
+  padding: 8px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  background: rgba(248, 113, 113, 0.12);
+  color: #ffaaaa;
+  cursor: pointer;
+}
+
+.btnDangerGhost:hover {
+  background: rgba(248, 113, 113, 0.22);
+  color: #ffcccc;
+}
+
+.help {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.bottomAdd {
+  margin-top: 12px;
+}
+
+/* ===== year list ===== */
+.years {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.year {
+  border: 1px solid rgba(160, 160, 160, 0.22);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.summary {
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.yearTitle {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.yearLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.yearInput {
+  width: 110px;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight:500;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+
+.yearInput:focus {
+  border-color: rgba(220, 220, 220, 0.6);
+}
+
+.projectTitleInput {
+  width: 25%;
+  min-width: 0;
+  padding: 10px;
+  margin-bottom:2px;
+  font-size: 13px;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+
+/* 비편집 모드 — textarea와 동일한 박스 디자인 */
+.textareaView {
+  width: 90%;
+  min-height: 40px;
+  margin-top: 2px;
+  padding: 8px 8px;
+  font-size: 13px;
+  color: #ffffff;
+  background: rgba(112, 112, 112, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+.projectNewInput {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight:500;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(160, 160, 160, 0.3);
+  border-radius: 10px;
+  outline: none;
+}
+.projectNewInput::placeholder {
+  color:white;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.yearItems {
+  padding: 0 12px 12px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #cccccc;
+  margin-top: 6px;
+}
+
+/* ===== project list ===== */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(160, 160, 160, 0.22);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.idx {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(180, 180, 180, 0.3);
+  color: #e0e0e0;
+}
+
+.meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* ===== responsive ===== */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .formRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
