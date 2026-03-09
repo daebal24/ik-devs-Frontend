@@ -14,6 +14,7 @@ export async function POST(req: NextRequest)
     // 백엔드로 그대로 전송
     const backendRes = await fetch(BACKEND_UPLOAD_URL, {
       method: "POST",
+      credentials: "include", // 중요 (세션 쿠키 포함)
       body: formData,
       // FormData 를 보낼 때는 Content-Type 을 직접 지정하지 않습니다.
     });

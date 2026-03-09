@@ -26,6 +26,7 @@ export async function POST(request: Request) {
     const apiURL = `${process.env.BACKENDAPI}/api/${apiname}`;
     const res = await fetch(apiURL, {
       method: "POST",
+      credentials: "include", // 중요 (세션 쿠키 포함)
       headers: { 
         "Content-Type": "application/json",
         ...(incomingCookie ? { Cookie: incomingCookie } : {}), // 쿠키 전달

@@ -9,6 +9,7 @@ export async function POST(request: Request) {
     // Spring Boot 백엔드 API 호출
     const res = await fetch(apiURL, {
       method: "POST",
+      credentials: "include", // 중요 (세션 쿠키 포함)
       headers: {
         "Content-Type": "application/json"
       },
