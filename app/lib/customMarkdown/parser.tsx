@@ -20,8 +20,8 @@ export type ImageMapItem = {
 
 function getFilenameByName(imageMap: ImageMapItem[], targetName: string): string | null {
   const found = imageMap.find(
-    (item) => item.name === targetName && item.filetype === "image"
-  );
+    (item) => item.name === targetName
+  );// && item.filetype === "image"
   return found ? found.filename : null;
 }
 
@@ -160,6 +160,8 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
     const a_pageOpenRe = /\[a_page:([^\]]+)\]/i;
     const imgOpenRe = /\[img:([^\]\s]+)([^\]]*)\]/i;
     const aoutOpenRe = /\[aout:([^\]]+)\]/i;
+    const fileOpenRe = /\[file:([^\]]+)\]/i;
+    
 
     const boxIndex = text.search(boxOpenRe);
     const fontIndex = text.search(fontOpenRe);
@@ -167,8 +169,9 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
     const a_pageIndex = text.search(a_pageOpenRe);
     const imgIndex = text.search(imgOpenRe);
     const aoutIndex = text.search(aoutOpenRe);
+    const fileIndex =text.search(fileOpenRe);
 
-    if (boxIndex === -1 && fontIndex === -1 && commentIndex === -1 && a_pageIndex === -1 && imgIndex === -1 && aoutIndex === -1 ) return null;
+    if (boxIndex === -1 && fontIndex === -1 && commentIndex === -1 && a_pageIndex === -1 && imgIndex === -1 && aoutIndex === -1 && fileIndex == -1) return null;
 
     const candidates = [
       { type: "box" as const, index: boxIndex },
@@ -177,6 +180,7 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
       { type: "a_page" as const, index: a_pageIndex },
       { type: "img" as const, index: imgIndex },
       { type: "aout" as const, index: aoutIndex },
+      { type: "file" as const, index: fileIndex },
     ].filter((v) => v.index !== -1);
 
     candidates.sort((a, b) => a.index - b.index);
@@ -233,6 +237,22 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
 
       return {
         type: "img" as const,
+        before: text.slice(0, start),
+        after: text.slice(afterOpen),
+        url,
+        attrs,
+      };
+    }
+
+    if (next.type === "file") {
+      const open = text.match(fileOpenRe)!;
+      const start = open.index ?? 0;
+      const url = open[1] ?? "";
+      const afterOpen = start + open[0].length;
+      const attrs = open[2] ?? "";
+
+      return {
+        type: "file" as const,
         before: text.slice(0, start),
         after: text.slice(afterOpen),
         url,
@@ -354,6 +374,22 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
             maxWidth: "100%",
           }}
         />
+      );
+      text = m.after;
+      continue;
+    }
+
+    if (m.type === "file") {
+      const backendmediaurl = `${process.env.NEXT_PUBLIC_MEDIA}/`;
+      const filename = getFilenameByName(imageMap, m.url) || m.url;
+      const newurl = backendmediaurl + filename;
+      const mediaBox = parseBoxAttrs(m.attrs || "");
+      nodes.push(
+        <a
+          key={`file-${nodes.length}`}
+          href={newurl}
+          target="_blank"
+        >{m.url}</a>
       );
       text = m.after;
       continue;

@@ -62,7 +62,7 @@ export default function ImageUploadPage() {
     setError(null);
 
     if (!file) {
-      setError("이미지 파일을 선택해 주세요.");
+      setError("파일을 선택해 주세요.");
       return;
     }
 
@@ -135,12 +135,12 @@ export default function ImageUploadPage() {
   return (
     <main className="">
       <div className="">
-        <h1 className="">이미지 업로드</h1>
+        <h1 className="">파일 업로드</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* 파일 선택 */}
           <div className="">
-            <label className="">이미지 파일 (jpg, png)</label>
+            <label className="">파일 (jpg, png, pdf)</label>
             <input
               type="file"
               accept="image/png,image/jpeg,application/pdf"
@@ -206,7 +206,8 @@ export default function ImageUploadPage() {
               <div>
                 meta:
                 <pre className="">
-                  {JSON.stringify(result.meta, null, 2)}
+                  {/* {JSON.stringify(result.meta, null, 2)} */}
+                  업로드 완료
                 </pre>
               </div>
             )}

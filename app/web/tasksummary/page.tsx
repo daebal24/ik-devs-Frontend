@@ -220,9 +220,10 @@ export default function Page() {
   };
 
   const deleteYearGroup = (id: number) => {
-    setYearGroups((prev) =>
+    if (confirm("정말 진행하시겠습니까?"))
+    {setYearGroups((prev) =>
       prev.map((g) => (g.id === id ? { ...g, status: "delete", isEditing: false } : g))
-    );
+    );}
   };
 
   const toggleEditYearGroup = (id: number) => {
@@ -278,9 +279,10 @@ export default function Page() {
   };
 
   const deleteProject = (id: number) => {
-    setProjects((prev) =>
+    if (confirm("정말 진행하시겠습니까?"))
+    {setProjects((prev) =>
       prev.map((p) => (p.id === id ? { ...p, status: "delete", isEditing: false } : p))
-    );
+    );}
   };
 
   const toggleEditProject = (id: number) => {
