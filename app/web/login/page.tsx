@@ -56,10 +56,23 @@ export default function Page() {
       const loginresult = json.data;
       console.log(loginresult);
 
-      if (loginresult.result == "ok") {
-        router.push("/web/main");
+      switch (loginresult.result) 
+      {
+        case "ok":
+          router.push("/web/main");
+          break;
+        case "fail":
+          alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+loginresult.LoginFailcount);
+          break;
+        case "locked":
+          alert("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
+          break;
+        default:
+          alert("알 수 없는 에러입니다. 관리자에게 문의해주세요");
+          break;
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log(error);
       throw new Error(`Request failed: ${error}`);
     }
