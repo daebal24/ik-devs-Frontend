@@ -233,14 +233,15 @@ export default function Page() {
       )}
 
       {/* 미리보기 / 결과 */}
+      <p>추가 또는 수정 후 우측 상단 저장버튼을 눌러야 저장됩니다.</p>
       <section
         aria-label="미리보기"
         style={{
           width: "98%",
-          border: "1px solid #e5e7eb",
+          border: "1px dotted #e5e7eb",
           borderRadius: 10,
           padding: 16,
-          background: "#fafafa",
+          background: "#f3f8ff"
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -312,6 +313,7 @@ export default function Page() {
           공백N칸 : <code>[space:N]</code> <br />
           하이퍼링크(내부페이지) : [a_page:tasksummary]테스크서머리[/a_page] <br />
           하이퍼링크(외부페이지) : [aout:https://www.naver.com/]네이버[/aout] <br />
+          업로드된 파일 : [file:파일태그] <br />
         </p>
       </details >
     </main>
