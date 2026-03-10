@@ -4,6 +4,7 @@
 import React, { useRef, useMemo, useState, useEffect } from "react";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
 import styles from "./page.module.css";
+import { ViewMediaData } from "@/types/api";
 
 type YearGroup = {
   id: number;
@@ -35,6 +36,7 @@ const initialProjects: Project[] = [];
 export default function Page() {
   const [yearGroups, setYearGroups] = useState<YearGroup[]>(initialYearGroups);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [imageraw, setimagelist] = useState<ViewMediaData[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const didRun = useRef(false);
@@ -73,6 +75,22 @@ export default function Page() {
       }
     }
 
+    async function fetchImage() {
+      try {
+        const res = await fetch("/api/commonapi", {
+          method: "POST",
+          cache: "no-store",
+          body: JSON.stringify({ apiname: "viewMediaData" }),
+        });
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        const json = await res.json();
+        setimagelist(json.data as ViewMediaData[]);
+      } catch (e) {
+        setError((e as Error).message);
+      }
+    }
+
+    fetchImage();
     fetchData();
   }, []);
 
@@ -407,7 +425,7 @@ export default function Page() {
                     />
                   ) : (
                     <div className={styles.textareaView}>
-                      <CustomMarkdown source={g.content || ""} />
+                      <CustomMarkdown source={g.content || ""} imageMap={imageraw} />
                     </div>
                   )}
                 </div>
@@ -467,7 +485,7 @@ export default function Page() {
                       />
                     ) : (
                       <div className={styles.textareaView}>
-                        <CustomMarkdown source={p.content || ""} />
+                        <CustomMarkdown source={p.content || ""} imageMap={imageraw} />
                       </div>
                     )}
                   </div>
