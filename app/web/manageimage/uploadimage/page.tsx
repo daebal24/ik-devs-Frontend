@@ -90,6 +90,7 @@ export default function ImageUploadPage() {
       setIsUploading(true);
       const res = await fetch("/api/uploadMultimedia", {
         method: "POST",
+        cache: "no-store",
         body: formData,
       });
 
