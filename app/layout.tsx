@@ -2,7 +2,7 @@ import Header from "./defaultlayout/Header/page";
 import Footer from "./defaultlayout/Footer/page";
 
 export const metadata = {
-  title: "@TITLE",
+  title: "Hello. ik-dev",
   description: "Project"
 };
 
@@ -28,7 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             // backgroundPosition: "center",
             // filter: "blur(10px)",
             // transform: "scale(1.1)", // 가장자리 흰 테두리 방지
-            background: "linear-gradient(to right, #d7e7ff, #f0f5ff)"
+            //background: "conic-gradient(#00c6ff, #0072ff, #00c6ff)"
+            //
+            //background: "conic-gradient(#f0f0f0, #124dbf, #f0f0f0)"
+            background: "radial-gradient(circle at 50% 50%,  #124dbf, #d9f1ff, #124dbf)"
+
           }}
         />
 

@@ -26,6 +26,7 @@
 /* ── 카드 공통 ── */
 .card {
   background: #ffffff;
+  /* background: radial-gradient(circle at 50% 50%,  #94b2f0, #d9f1ff); */
   border-radius: 16px;
   padding: 28px 28px 24px;
   box-sizing: border-box;

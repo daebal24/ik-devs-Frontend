@@ -3,7 +3,8 @@ export default function Header() {
     return (
       <header
         style={{
-          background: "linear-gradient(to right, #94b8ee, #504df3)",
+          //background: "conic-gradient(#00c6ff, #0072ff, #00c6ff)",
+          background: "linear-gradient(to bottom, rgba(30,40,120,0.65), rgba(30,40,120,0))",
           color: "white",
           padding: "12px 24px",
           display: "flex",
@@ -11,7 +12,7 @@ export default function Header() {
           alignItems: "center",
         }}
       >
-        <h1 style={{ margin: 0, fontSize: "1.25rem" }}>Title</h1>
+        <h1 style={{ margin: 0, fontSize: "1.25rem" }}>ik-dev</h1>
         <nav style={{ display: "flex", gap: "1rem" }}>
           <a href="/web/main" style={{ color: "white", textDecoration: "none" }}>Home</a>
           <a href="/web/login" style={{ color: "white", textDecoration: "none" }}>로그아웃</a>
