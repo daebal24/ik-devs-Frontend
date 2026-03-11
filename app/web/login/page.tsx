@@ -67,6 +67,16 @@ export default function Page() {
         case "locked":
           alert("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
           break;
+        case "otp_create":
+          alert("OTP 키 생성");
+          sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
+          router.push('/web/login/otpcreate');
+          break;
+        case "otp_verify":
+          alert("OTP 인증요청");
+          sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
+          router.push('/web/login/otplogin');
+          break;
         default:
           alert("알 수 없는 에러입니다. 관리자에게 문의해주세요");
           break;
