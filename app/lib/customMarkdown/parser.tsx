@@ -339,7 +339,6 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
           <a
             key={`a_page-${nodes.length}`}
             href={newurl}
-            target="_blank"
             rel="noopener noreferrer"
             //className={opts.a_pageClassName}
             style={{

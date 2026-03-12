@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
-import {viewPageData, ViewMediaData} from "@/types/api";
+import {viewPageData, ViewMediaData, IsLoginApiData_data} from "@/types/api";
+import isLogin from "@/app/lib/login/islogin";
 
 /**
  * 커스텀 마크다운 사용법
@@ -77,7 +78,19 @@ export default function Page() {
     if (didRun.current) return;
     didRun.current = true;
 
-    async function fetchData() 
+    
+    (async () => {
+      //현재 브라우저가 로그인된 상태인지 확인. 없으면 로그인 제한
+      const isLoginResult:IsLoginApiData_data = await isLogin();
+      if(isLoginResult.haveSession == false)
+      {
+        alert("접근 권한이 없습니다.");
+        router.push("/web/login");
+        return;
+      }
+    })();
+
+    async function fetchData()
     {
       try 
       {

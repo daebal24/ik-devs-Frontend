@@ -4,7 +4,8 @@ import React, { useMemo, useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 import styles from './page.module.css';
-import {viewPageData} from '@/types/api';
+import {viewPageData, IsLoginApiData_data} from '@/types/api';
+import isLogin from "@/app/lib/login/islogin";
 
 // type ViewMediaData=
 // {
@@ -61,6 +62,17 @@ export default function Page() {
       if (didRun.current) return;
       didRun.current = true;
 
+      //현재 브라우저가 로그인된 상태인지 확인. 없으면 로그인 제한
+      (async () => {
+        const isLoginResult:IsLoginApiData_data = await isLogin();
+        if(isLoginResult.haveSession == false)
+        {
+          alert("접근 권한이 없습니다.");
+          router.push("/web/login");
+          return;
+        }
+      })();
+      
       async function fetchData() {
         try {
           setError(null);

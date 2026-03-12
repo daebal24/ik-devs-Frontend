@@ -2,9 +2,11 @@
 "use client";
 
 import React, { useRef, useMemo, useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import isLogin from "@/app/lib/login/islogin";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
 import styles from "./page.module.css";
-import { ViewMediaData } from "@/types/api";
+import { ViewMediaData, IsLoginApiData_data } from "@/types/api";
 
 type YearGroup = {
   id: number;
@@ -34,6 +36,7 @@ const initialYearGroups: YearGroup[] = [];
 const initialProjects: Project[] = [];
 
 export default function Page() {
+  const router = useRouter();
   const [yearGroups, setYearGroups] = useState<YearGroup[]>(initialYearGroups);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [imageraw, setimagelist] = useState<ViewMediaData[]>([]);
@@ -42,9 +45,24 @@ export default function Page() {
   const didRun = useRef(false);
 
   useEffect(() => {
+    //현재 브라우저가 로그인된 상태인지 확인. 없으면 로그인 제한
+    
     //StrictMode로 effect가 두 번 타도 첫 번째만 처리하게 막기
     if (didRun.current) return;
     didRun.current = true;
+
+    (async () => {
+      const isLoginResult:IsLoginApiData_data = await isLogin();
+      if(isLoginResult.haveSession == false)
+      {
+        alert("접근 권한이 없습니다.");
+        router.push("/web/login");
+        return;
+      }
+      fetchImage();
+      fetchData();
+    })();
+    
 
     //데이터 불러오기
     async function fetchData() {
@@ -90,8 +108,6 @@ export default function Page() {
       }
     }
 
-    fetchImage();
-    fetchData();
   }, []);
 
   const datasplit = (data: Array<ViewPageContenttasksummary>) => {
