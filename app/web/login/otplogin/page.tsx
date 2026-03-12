@@ -1,35 +1,37 @@
-/*
-
-
-
-*/
-
 "use client";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
+type LoginResult = {
+  id: string;
+  usertype: string;
+  result: string;
+};
+
 export default function OtpSetup() {
   const router = useRouter();
-  const [loginresult, setloginresult] = useState(null);
+  const [loginresult, setloginresult] = useState<LoginResult | null>(null);
   const [otpcode, setcode] = useState("");
 
-  // useEffect(() => {
-  //   const raw = sessionStorage.getItem('loginresult');
+  useEffect(() => {
+    const raw = sessionStorage.getItem('loginresult');
 
-  //   if (!raw) {
-  //     alert("ERROR!");
-  //     router.push('/');  // 데이터 없으면 홈으로 튕겨냄
-  //     return;
-  //   }
+    if (!raw) {
+      alert("ERROR!");
+      router.push('/');  // 데이터 없으면 홈으로 튕겨냄
+      return;
+    }
 
-  //   setloginresult(JSON.parse(raw));
-  //   console.log(raw);
-  //   sessionStorage.removeItem('otpData');  // 읽자마자 삭제
-  // }, []);
+    setloginresult(JSON.parse(raw));
+    console.log(raw);
+    console.log(JSON.parse(raw));
+    console.log(loginresult);
+    sessionStorage.removeItem('otpData');  // 읽자마자 삭제
+  }, []);
 
-  // if (!loginresult) return <p>Loading...</p>;
+  if (!loginresult) return <p>Loading...</p>;
 
   //테스트값
 
@@ -37,11 +39,10 @@ export default function OtpSetup() {
   async function otplogin() {
     try {
       if (!otpcode) return alert("코드를 입력하세요.");
+      if (!loginresult) return;  // 비정상적 접근 차단
 
-      //otpcode
-      //loginresult
-      const id = 'test';//loginresult.id;
-      const usertype = 'admin';//loginresult.usertype;
+      const id = loginresult.id;
+      const usertype = loginresult.usertype;
 
       //loginresult에 id, usertype 실어서 보냄
       const res = await fetch("/api/commonapi", {
@@ -57,16 +58,16 @@ export default function OtpSetup() {
 
       const text = await res.text();
       const json = JSON.parse(text);
-      const loginresult = json.data;
-      console.log(loginresult);
+      const result_GoogleOTPLogin = json.data;
+      console.log(result_GoogleOTPLogin);
 
-      switch (loginresult.result) 
+      switch (result_GoogleOTPLogin.result) 
       {
         case "ok":
           router.push("/web/main");
           break;
         case "fail":
-          alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+loginresult.LoginFailcount);
+          alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+result_GoogleOTPLogin.LoginFailcount);
           break;
         case "locked":
           alert("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");

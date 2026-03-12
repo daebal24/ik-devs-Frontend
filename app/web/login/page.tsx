@@ -87,6 +87,22 @@ export default function Page() {
       throw new Error(`Request failed: ${error}`);
     }
   }
+  async function test_gooleotpreset()
+  {
+    const res = await fetch("/api/commonapi", {
+        method: "POST",
+        cache: "no-store",
+        body: JSON.stringify({
+          apiname: "test_gooleotpreset",
+        }),
+      });
+
+      if (!res.ok) 
+        throw new Error(`Request failed: ${res.status}`);
+      else
+        alert("구글 OTP 정보가 초기화되었습니다. OTP 재등록 가능합니다");
+  }
+//test_gooleotpreset
 
   return (
     <main className={styles.page}>
@@ -138,7 +154,17 @@ export default function Page() {
           RSBoard v1.0 · Authorized access only
         </div>
 
+        <div>
+          <br/>
+          * 방문용 계정 <br/>
+            &nbsp;&nbsp;&nbsp;접속정보 : guest / 1234 <br/>
+          * 방문용 계정(구글OTP 테스트 포함) <br/>
+            &nbsp;&nbsp;&nbsp;접속정보 : otptest / 1234<br/>
+            &nbsp;&nbsp;&nbsp;<button onClick={(e) => test_gooleotpreset()}>구글OTP 테스트 계정 OTP 리셋</button>
+        </div>
+
       </div>
+      
     </main>
   );
 }
