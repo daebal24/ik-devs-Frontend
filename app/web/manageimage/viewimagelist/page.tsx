@@ -39,7 +39,7 @@ export default function Page() {
   let params_result = params ? Array.isArray(params) ? params.join("/") : params : "(파라미터 없음)";
 
   //백엔드 연결
-  
+  const [isAdmin, setIsAdmin] = useState(false);
   const [raw, setRaw] = useState<ViewMediaData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -61,6 +61,7 @@ export default function Page() {
           router.push("/web/login");
           return;
         }
+        setIsAdmin(isLoginResult.usertype === "admin");
       })();
 
       async function fetchData() {
@@ -99,7 +100,7 @@ export default function Page() {
     return (
     <main className={styles.mainWrapper}>
       <div className={styles.toolbar}>
-        <button className={styles.topBtn} onClick={() => router.push("/web/manageimage/uploadimage")}>이미지 업로드</button>
+        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } router.push("/web/manageimage/uploadimage"); }}>이미지 업로드</button>
       </div>
       <div className={styles.gridContainer}>
         {loading && <div className={styles.loading}>로딩 중...</div>}

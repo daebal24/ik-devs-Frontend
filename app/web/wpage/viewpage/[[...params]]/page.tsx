@@ -55,7 +55,8 @@ export default function Page() {
     : "(파라미터 없음)";
 
   //백엔드 연결
-  const [loading, setLoading] = useState(true); 
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState("");
   const didRun = useRef(false);//useEffect 중복 호출방지
@@ -76,6 +77,7 @@ export default function Page() {
         router.push("/web/login");
         return;
       }
+      setIsAdmin(isLoginResult.usertype === "admin");
     })();
 
     async function fetchData()
@@ -264,7 +266,7 @@ export default function Page() {
           )}
           {isPreview && (
             <button
-              onClick={() => saveText(params_result, raw, pagememo)}
+              onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } saveText(params_result, raw, pagememo); }}
               style={{
                 padding: "6px 10px",
                 borderRadius: 8,

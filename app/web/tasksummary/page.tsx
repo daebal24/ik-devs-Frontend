@@ -40,6 +40,7 @@ export default function Page() {
   const [yearGroups, setYearGroups] = useState<YearGroup[]>(initialYearGroups);
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [imageraw, setimagelist] = useState<ViewMediaData[]>([]);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const didRun = useRef(false);
@@ -59,6 +60,7 @@ export default function Page() {
         router.push("/web/login");
         return;
       }
+      setIsAdmin(isLoginResult.usertype === "admin");
       fetchImage();
       fetchData();
     })();
@@ -377,7 +379,7 @@ export default function Page() {
           <p>좌측: 연도별 / 우측: 수행 프로젝트</p>
           <p>추가 또는 수정 후 우측 상단 저장버튼을 눌러야 저장됩니다.</p>
         </div>
-        <button className={styles.savebutton} onClick={onSave}>
+        <button className={styles.savebutton} onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } onSave(); }}>
           저장
         </button>
       </header>
