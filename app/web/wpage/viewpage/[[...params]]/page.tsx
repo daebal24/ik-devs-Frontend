@@ -7,18 +7,6 @@ import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
 import {viewPageData, ViewMediaData, IsLoginApiData_data} from "@/types/api";
 import isLogin from "@/app/lib/login/islogin";
 
-/**
- * 커스텀 마크다운 사용법
- *
- * [box] ... [/box]
- * [box width=400 height=200 padding=20 bg=#fff border=#000 radius=6 display=inline-block] ... [/box]
- * [font size=24 color=#ff0000] ... [/font]
- * [comment] ... [/comment]  // ✅ 화면에 렌더링되지 않는 주석
- * [comment author=kim date=2026-01-02] ... [/comment]
- * 줄바꿈: <br />
- * 공백N칸: [space:N]
- * 하이퍼링크: [aout:https://example.com/]텍스트[/aout]
- */
 
 async function saveText(pagename: string, content: string, pagememo: string) {
   if (confirm("정말 진행하시겠습니까?")) {

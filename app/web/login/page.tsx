@@ -61,6 +61,9 @@ export default function Page() {
         case "ok":
           router.push("/web/main");
           break;
+        case "id_not_exist":
+          alert("존재하지 않는 아이디입니다 : "+loginresult.id);
+          break;
         case "fail":
           alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+loginresult.LoginFailcount);
           break;
