@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
+
 
 type LoginResult = {
   id: string;
@@ -19,8 +22,11 @@ export default function OtpSetup() {
     const raw = sessionStorage.getItem('loginresult');
 
     if (!raw) {
-      alert("ERROR!");
-      router.push('/');  // 데이터 없으면 홈으로 튕겨냄
+      // 데이터 없으면 홈으로 튕겨냄
+      toast.error("ERROR");
+      setTimeout(() => {
+          router.push("/");
+        }, 1000);  
       return;
     }
 
@@ -38,7 +44,7 @@ export default function OtpSetup() {
   
   async function otplogin() {
     try {
-      if (!otpcode) return alert("코드를 입력하세요.");
+      if (!otpcode) return toast.warn("코드를 입력하세요.");
       if (!loginresult) return;  // 비정상적 접근 차단
 
       const id = loginresult.id;
@@ -67,13 +73,13 @@ export default function OtpSetup() {
           router.push("/web/main");
           break;
         case "fail":
-          alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+result_GoogleOTPLogin.LoginFailcount);
+          toast.error("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+result_GoogleOTPLogin.LoginFailcount);
           break;
         case "locked":
-          alert("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
+          toast.error("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
           break;
         default:
-          alert("알 수 없는 에러입니다. 관리자에게 문의해주세요");
+          toast.error("알 수 없는 에러입니다. 관리자에게 문의해주세요");
           break;
       }
     } 
@@ -86,6 +92,7 @@ export default function OtpSetup() {
 
   return (
     <main className={styles.page}>
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className={styles.card}>
 
         <div className={styles.header}>

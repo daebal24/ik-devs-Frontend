@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 export default function Page() {
   const router = useRouter();
@@ -37,8 +39,8 @@ export default function Page() {
 
   async function login(inputid: string, inputpw: string) {
     try {
-      if (!inputid) return alert("아이디를 입력하세요.");
-      if (!inputpw) return alert("비밀번호를 입력하세요.");
+      if (!inputid) return void toast.warn("아이디를 입력하세요.");
+      if (!inputpw) return void toast.warn("비밀번호를 입력하세요.");
 
       const res = await fetch("/api/commonapi", {
         method: "POST",
@@ -62,26 +64,30 @@ export default function Page() {
           router.push("/web/main");
           break;
         case "id_not_exist":
-          alert("존재하지 않는 아이디입니다 : "+loginresult.id);
+          toast.error("존재하지 않는 아이디입니다 : " + loginresult.id);
           break;
         case "fail":
-          alert("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+loginresult.LoginFailcount);
+          toast.error("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : " + loginresult.LoginFailcount);
           break;
         case "locked":
-          alert("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
+          toast.error("로그인 실패횟수 초과입니다. 관리자에게 문의해주세요");
           break;
         case "otp_create":
-          alert("OTP 키 생성");
+          toast.info("OTP 키 생성");
           sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
-          router.push('/web/login/otpcreate');
+          setTimeout(() => {
+            router.push('/web/login/otpcreate');
+          }, 2000);
           break;
         case "otp_verify":
-          alert("OTP 인증요청");
+          toast.info("OTP 인증요청");
           sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
-          router.push('/web/login/otplogin');
+          setTimeout(() => {
+            router.push('/web/login/otplogin');
+          }, 2000);
           break;
         default:
-          alert("알 수 없는 에러입니다. 관리자에게 문의해주세요");
+          toast.error("알 수 없는 에러입니다. 관리자에게 문의해주세요");
           break;
       }
     } 
@@ -90,25 +96,26 @@ export default function Page() {
       throw new Error(`Request failed: ${error}`);
     }
   }
-  async function test_gooleotpreset()
-  {
-    const res = await fetch("/api/commonapi", {
-        method: "POST",
-        cache: "no-store",
-        body: JSON.stringify({
-          apiname: "test_gooleotpreset",
-        }),
-      });
 
-      if (!res.ok) 
-        throw new Error(`Request failed: ${res.status}`);
-      else
-        alert("구글 OTP 정보가 초기화되었습니다. OTP 재등록 가능합니다");
+  async function test_gooleotpreset() {
+    const res = await fetch("/api/commonapi", {
+      method: "POST",
+      cache: "no-store",
+      body: JSON.stringify({
+        apiname: "test_gooleotpreset",
+      }),
+    });
+
+    if (!res.ok)
+      throw new Error(`Request failed: ${res.status}`);
+    else
+      toast.success("구글 OTP 정보가 초기화되었습니다. OTP 재등록 가능합니다");
   }
-//test_gooleotpreset
 
   return (
     <main className={styles.page}>
+      <ToastContainer position="top-center" autoClose={3000} />
+
       <div className={styles.card}>
 
         <div className={styles.header}>
@@ -163,7 +170,7 @@ export default function Page() {
             &nbsp;&nbsp;&nbsp;접속정보 : guest / 1234 <br/>
           * 방문용 계정(구글OTP 테스트 포함) <br/>
             &nbsp;&nbsp;&nbsp;접속정보 : otptest / 1234<br/>
-            &nbsp;&nbsp;&nbsp;<button onClick={(e) => test_gooleotpreset()}>구글OTP 테스트 계정 OTP 리셋</button>
+            &nbsp;&nbsp;&nbsp;<button onClick={() => test_gooleotpreset()}>구글OTP 테스트 계정 OTP 리셋</button>
         </div>
 
       </div>

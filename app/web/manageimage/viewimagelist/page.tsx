@@ -7,6 +7,8 @@ import isLogin from "@/app/lib/login/islogin";
 import { IsLoginApiData_data } from "@/types/api";
 
 import styles from './page.module.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 type ViewMediaData=
 {
@@ -57,8 +59,10 @@ export default function Page() {
         const isLoginResult:IsLoginApiData_data = await isLogin();
         if(isLoginResult.haveSession == false)
         {
-          alert("접근 권한이 없습니다.");
-          router.push("/web/login");
+          toast.error("접근 권한이 없습니다.");
+          setTimeout(() => {
+              router.push("/web/login");;
+            }, 1000);
           return;
         }
         setIsAdmin(isLoginResult.usertype === "admin");
@@ -99,8 +103,9 @@ export default function Page() {
 
     return (
     <main className={styles.mainWrapper}>
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className={styles.toolbar}>
-        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } router.push("/web/manageimage/uploadimage"); }}>이미지 업로드</button>
+        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } router.push("/web/manageimage/uploadimage"); }}>이미지 업로드</button>
       </div>
       <div className={styles.gridContainer}>
         {loading && <div className={styles.loading}>로딩 중...</div>}

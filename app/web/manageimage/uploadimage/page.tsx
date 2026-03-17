@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 
 import { IsLoginApiData_data } from "@/types/api";
 import isLogin from "@/app/lib/login/islogin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 type UploadResponse = {
   ok: boolean;
@@ -122,9 +124,11 @@ export default function ImageUploadPage() {
       const isLoginResult:IsLoginApiData_data = await isLogin();
       console.log(isLoginResult);
       if(isLoginResult.usertype != "admin")
-      {
-        alert("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);
-        router.push("/web/main");
+      {   
+        toast.error("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);
+        setTimeout(() => {
+            router.push("/web/main");
+          }, 1000);
       }
     })();
 
@@ -135,6 +139,7 @@ export default function ImageUploadPage() {
 
   return (
     <main className="">
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="">
         <h1 className="">파일 업로드</h1>
 

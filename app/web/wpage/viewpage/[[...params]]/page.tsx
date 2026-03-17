@@ -6,6 +6,9 @@ import styles from "./page.module.css";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
 import {viewPageData, ViewMediaData, IsLoginApiData_data} from "@/types/api";
 import isLogin from "@/app/lib/login/islogin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
+
 
 
 async function saveText(pagename: string, content: string, pagememo: string) {
@@ -24,7 +27,7 @@ async function saveText(pagename: string, content: string, pagememo: string) {
       if (!res.ok) {
         throw new Error(`Request failed: ${res.status}`);
       } else {
-        alert("Save Complete");
+        toast.success("저장 완료");
       }
     } catch (error) {
       console.log(error);
@@ -73,9 +76,10 @@ export default function Page() {
       const isLoginResult:IsLoginApiData_data = await isLogin();
       if(isLoginResult.haveSession == false)
       {
-        alert("접근 권한이 없습니다.");
-        router.push("/web/login");
-        return;
+        toast.error("접근 권한이 없습니다.");
+        setTimeout(() => {
+            router.push("/web/login");;
+          }, 1000);
       }
       setIsAdmin(isLoginResult.usertype === "admin");
     })();
@@ -171,6 +175,7 @@ export default function Page() {
 
   return (
     <main>
+      <ToastContainer position="top-center" autoClose={3000} />
       {/* 편집 영역 */}
       {!isPreview && (
         <section
@@ -266,7 +271,7 @@ export default function Page() {
           )}
           {isPreview && (
             <button
-              onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } saveText(params_result, raw, pagememo); }}
+              onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } saveText(params_result, raw, pagememo); }}
               style={{
                 padding: "6px 10px",
                 borderRadius: 8,

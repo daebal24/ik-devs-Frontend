@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter  } from "next/navigation";
 import styles from "./page.module.css";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 //로그인
 import isLogin from "@/app/lib/login/islogin";
@@ -50,7 +52,7 @@ export default function Page() {
   {
     if(pagename == null || pagename == '' || content == null || content == '' || memo == null || memo == '')
     {
-      alert("문서주소와 내용, 설명을 채워주세요");
+      toast.warn("문서주소와 내용, 설명을 채워주세요");
       return;
     }
     if (confirm("정말 진행하시겠습니까?")) {
@@ -73,17 +75,17 @@ export default function Page() {
           console.log();
           if(save_result.data.raw == "Success")
           {
-            alert("저장 완료");
+            toast.success("저장 완료");
             router.push("/web/wpage/managepage");
           }
           else if(save_result.data.raw == "AlreadyExist")
           {
-            alert("문서제목이 중복됩니다. 다른 제목을 사용해주세요");
+            toast.warn("문서제목이 중복됩니다. 다른 제목을 사용해주세요");
           }
           else
           {
             console.log(save_result);
-            alert("Unknown Error");
+            toast.error("Unknown Error");
           }
             
         }
@@ -113,8 +115,11 @@ export default function Page() {
       const isLoginResult:IsLoginApiData_data = await isLogin();
       if(isLoginResult.usertype != "admin")
       {
-        alert("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);
-        router.push("/web/main");
+        toast.error("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);
+        setTimeout(() => {
+            router.push("/web/main");
+          }, 1000);
+        return;        
       }
     })();
 
@@ -122,6 +127,7 @@ export default function Page() {
 
   return (
     <main>
+      <ToastContainer position="top-center" autoClose={3000} />
       {/* 편집 영역 */}
       {!isPreview && (
         <section

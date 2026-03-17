@@ -7,6 +7,8 @@ import isLogin from "@/app/lib/login/islogin";
 import CustomMarkdown from "@/app/lib/customMarkdown/CustomMarkdown";
 import styles from "./page.module.css";
 import { ViewMediaData, IsLoginApiData_data } from "@/types/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 type YearGroup = {
   id: number;
@@ -56,9 +58,11 @@ export default function Page() {
       const isLoginResult:IsLoginApiData_data = await isLogin();
       if(isLoginResult.haveSession == false)
       {
-        alert("접근 권한이 없습니다.");
-        router.push("/web/login");
-        return;
+          toast.error("접근 권한이 없습니다.");
+          setTimeout(() => {
+              router.push("/web/login");;
+            }, 1000);
+          return;
       }
       setIsAdmin(isLoginResult.usertype === "admin");
       fetchImage();
@@ -345,7 +349,7 @@ export default function Page() {
       });
 
       if (!res.ok) {
-        alert(`저장 실패 (${res.status})`);
+        toast.error(`저장 실패 (${res.status})`);
         //location.reload();
         return;
       }
@@ -358,15 +362,20 @@ export default function Page() {
       }
 
       if (json && json.success === false) {
-        alert(`저장 실패${json.message ? `: ${json.message}` : ""}`);
-        location.reload();
+        toast.error(`저장 실패${json.message ? `: ${json.message}` : ""}`);
+        setTimeout(() => {
+            location.reload();
+          }, 1000); 
         return;
       }
 
-      alert("저장 성공");
+      toast.success("저장 성공");
       location.reload();
     } catch (e) {
-      alert(`저장 실패: ${(e as Error).message}`);
+      toast.error(`저장 실패: ${(e as Error).message}`);
+      setTimeout(() => {
+          location.reload();
+        }, 2000); 
       location.reload();
     }
   };
@@ -379,12 +388,13 @@ export default function Page() {
           <p>좌측: 연도별 / 우측: 수행 프로젝트</p>
           <p>추가 또는 수정 후 우측 상단 저장버튼을 눌러야 저장됩니다.</p>
         </div>
-        <button className={styles.savebutton} onClick={() => { if (!isAdmin) { alert("허용되지 않는 사용자입니다."); return; } onSave(); }}>
+        <button className={styles.savebutton} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } onSave(); }}>
           저장
         </button>
       </header>
 
       <main className={styles.layout}>
+        <ToastContainer position="top-center" autoClose={3000} />
         {/* LEFT: 연도별 */}
         <section className={styles.card}>
           <div className={styles.hd}>

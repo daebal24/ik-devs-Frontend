@@ -6,6 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import isLogin from "@/app/lib/login/islogin";
 import { IsLoginApiData_data } from "@/types/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 export default function SessionCheckPage() {
   const [result, setResult] = useState<any>(null);
@@ -22,8 +24,11 @@ export default function SessionCheckPage() {
       const isLoginResult:IsLoginApiData_data = await isLogin();
       if(isLoginResult.haveSession == false)
       {
-        alert("접근 권한이 없습니다.");
-        router.push("/web/login");
+        toast.error("접근 권한이 없습니다.");
+        setTimeout(() => 
+        {
+          router.push("/web/login");
+        }, 1000);
       }
     })();
 
@@ -56,6 +61,7 @@ export default function SessionCheckPage() {
 
   return (
     <main>
+      <ToastContainer position="top-center" autoClose={3000} />
       <h1>세션 확인 테스트</h1>
       <button onClick={checkSession}>세션 수동 확인버튼</button>
 
