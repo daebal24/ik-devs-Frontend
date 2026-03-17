@@ -60,7 +60,7 @@ export default function Page() {
       {
           toast.error("접근 권한이 없습니다.");
           setTimeout(() => {
-              router.push("/web/login");;
+              router.push("/web/login");
             }, 1000);
           return;
       }
@@ -336,7 +336,6 @@ export default function Page() {
       console.log(base64encoding_projectcontents(projects));
       //return;
       
-      
       //base64decoding_contents
       const res = await fetch("/api/commonapi", {
         method: "POST",
@@ -370,7 +369,10 @@ export default function Page() {
       }
 
       toast.success("저장 성공");
-      location.reload();
+      setTimeout(() => {
+          location.reload();
+        }, 1000);
+      return;   
     } catch (e) {
       toast.error(`저장 실패: ${(e as Error).message}`);
       setTimeout(() => {
@@ -383,6 +385,7 @@ export default function Page() {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
+        
         <div className={styles.title}>
           <h1>프로젝트</h1>
           <p>좌측: 연도별 / 우측: 수행 프로젝트</p>
@@ -394,7 +397,7 @@ export default function Page() {
       </header>
 
       <main className={styles.layout}>
-        <ToastContainer position="top-center" autoClose={3000} />
+        
         {/* LEFT: 연도별 */}
         <section className={styles.card}>
           <div className={styles.hd}>
@@ -553,6 +556,7 @@ export default function Page() {
         {/* 필요 시 error 표시 */}
         {error ? <div style={{ padding: 12, color: "#fca5a5" }}>{error}</div> : null}
       </main>
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 }

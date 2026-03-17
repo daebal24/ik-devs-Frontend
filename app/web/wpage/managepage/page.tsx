@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useMemo, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 
 import styles from './page.module.css';
 import {viewPageData, IsLoginApiData_data} from '@/types/api';
 import isLogin from "@/app/lib/login/islogin";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.css";
 
 // type ViewMediaData=
 // {
@@ -49,13 +51,28 @@ export default function Page() {
   let params_result = params ? Array.isArray(params) ? params.join("/") : params : "(파라미터 없음)";
 
   //백엔드 연결
-  
+  const [isAdmin, setIsAdmin] = useState(false);
   const [raw, setRaw] = useState<viewPageData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState("");
 
-  // ✅ 페이지가 렌더링되면 자동으로 한 번 API 호출
+  // 검색
+  const [searchInput, setSearchInput] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const filtered = searchKeyword.trim() === ""
+    ? raw
+    : raw.filter((item) => {
+        try {
+          const decoded = Buffer.from(item.content, "base64").toString("utf8");
+          console.log(decoded);
+          return decoded.includes(searchKeyword.trim());
+        } catch {
+          return false;
+        }
+      });
+
+  // 페이지가 렌더링되면 자동으로 한 번 API 호출
     useEffect(() => 
     {
       //useEffect 중복 호출방지
@@ -67,10 +84,13 @@ export default function Page() {
         const isLoginResult:IsLoginApiData_data = await isLogin();
         if(isLoginResult.haveSession == false)
         {
-          alert("접근 권한이 없습니다.");
-          router.push("/web/login");
+          toast.error("접근 권한이 없습니다.");
+          setTimeout(() => {
+              router.push("/web/login");
+            }, 1000);
           return;
         }
+        setIsAdmin(isLoginResult.usertype === "admin");
       })();
       
       async function fetchData() {
@@ -105,11 +125,25 @@ export default function Page() {
       fetchData();
     }, []);
 
-
     return (
     <main className={styles.mainWrapper}>
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className={styles.toolbar}>
-        <button className={styles.topBtn} onClick={() => router.push("/web/wpage/createpage")}>문서 생성</button>
+        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } router.push("/web/wpage/createpage"); }}>문서 생성</button>
+        <div className={styles.searchBox}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            placeholder="문서 내용 검색..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") setSearchKeyword(searchInput); }}
+          />
+          <button className={styles.searchBtn} onClick={() => setSearchKeyword(searchInput)}>검색</button>
+          {searchKeyword.trim() !== "" && (
+            <button className={styles.searchClearBtn} onClick={() => { setSearchInput(""); setSearchKeyword(""); }}>✕</button>
+          )}
+        </div>
       </div>
       <div className={styles.gridContainer}>
         {loading && <div className={styles.loading}>로딩 중...</div>}
@@ -117,7 +151,7 @@ export default function Page() {
 
         {!loading &&
           !error &&
-          raw.map((item) => (
+          filtered.map((item) => (
             <div className={styles.card} key={item.pagename}>
               <button className={styles.cardBtn} onClick={() => router.push(`/web/wpage/viewpage/${item.pagename}`)}>
                 {item.pagename}
@@ -126,6 +160,10 @@ export default function Page() {
             </div>
           ))
         }
+
+        {!loading && !error && filtered.length === 0 && (
+          <div className={styles.noResult}>검색 결과가 없습니다.</div>
+        )}
       </div>
     </main>
   );
