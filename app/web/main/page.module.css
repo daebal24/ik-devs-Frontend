@@ -1,5 +1,5 @@
 /* =============================================
-   RSBoard — Main Page (Minimal Modern)
+   Dae Ik Board — Main Page (Minimal Modern)
    ============================================= */
 
 .mainWrapper {
@@ -14,19 +14,12 @@
   /* border: 1px solid black; */
 }
 
-/* ── Grid ── */
-.gridContainer {
-  display: grid;
-  height: 100%;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: 1fr 1fr;
-  gap: 14px;
-}
-
 /* ── 카드 공통 ── */
 .card {
-  background: #ffffff;
-  /* background: radial-gradient(circle at 50% 50%,  #94b2f0, #d9f1ff); */
+  /* background: #ffffff; */
+  background: Linear-gradient(#ffffff,#292929);
+  /* background: rgba(245, 245, 245, 0.37); */
+  backdrop-filter: blur(16px);
   border-radius: 16px;
   padding: 28px 28px 24px;
   box-sizing: border-box;
@@ -39,7 +32,26 @@
   height:20vh;
   position:relative;
 }
+/* ── 카드별 grid 위치 ── */
+.card1 {
+  grid-column: span 3;
+}
 
+.card2 {
+  grid-column: span 3;
+}
+
+.card3 {
+  grid-column: span 2;
+}
+
+.card4 {
+  grid-column: span 2;
+}
+
+.card5 {
+  grid-column: span 2;
+}
 
 .card:hover {
   transform: translateY(-3px);
@@ -87,6 +99,15 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
+/* ── Grid ── */
+.gridContainer {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 14px;
+}
+
 /* ── 카드 내부 구조 ── */
 .cardTop {
   display: flex;
@@ -104,7 +125,7 @@
 
 .cardDesc {
   font-size: 13px;
-  color: #9a9a9a;
+  color: #000000;
   font-weight: 400;
   line-height: 1.5;
 }
@@ -122,26 +143,7 @@
   transform: translate(2px, -2px);
 }
 
-/* ── 카드별 grid 위치 ── */
-.card1 {
-  grid-column: span 3;
-}
 
-.card2 {
-  grid-column: span 3;
-}
-
-.card3 {
-  grid-column: span 2;
-}
-
-.card4 {
-  grid-column: span 2;
-}
-
-.card5 {
-  grid-column: span 2;
-}
 
 /* ── 반응형 ── */
 @media (max-width: 768px) {
