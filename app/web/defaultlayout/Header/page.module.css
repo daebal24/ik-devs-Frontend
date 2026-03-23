@@ -1,0 +1,136 @@
+.header {
+  background: linear-gradient(to bottom, rgba(30, 40, 120, 0.65), rgba(30, 40, 120, 0));
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.logo {
+  margin: 0;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: white;
+}
+
+/* ───── 데스크탑 nav ───── */
+.nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.navBtn {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 0.875rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.2s;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.navBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ───── 햄버거 버튼 (모바일 전용) ───── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 110;
+}
+
+.hamburgerLine {
+  width: 22px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 99px;
+  transition: transform 0.25s, opacity 0.25s;
+  display: block;
+}
+
+/* 열렸을 때 X 모양 */
+.hamburger.open .hamburgerLine:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.open .hamburgerLine:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.open .hamburgerLine:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ───── 모바일 드롭다운 메뉴 ───── */
+.mobileMenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(18, 24, 43, 0.97);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 100;
+  flex-direction: column;
+  padding: 6px 0;
+  backdrop-filter: blur(12px);
+}
+
+.mobileMenu.open {
+  display: flex;
+}
+
+.mobileNavBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-family: inherit;
+  text-align: left;
+  padding: 12px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.15s, color 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.mobileNavBtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.95);
+  border-left-color: rgba(100, 140, 255, 0.7);
+}
+
+.mobileNavBtn:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ───── 반응형 분기 ───── */
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobileMenu {
+    display: none;
+  }
+
+  .mobileMenu.open {
+    display: flex;
+  }
+}

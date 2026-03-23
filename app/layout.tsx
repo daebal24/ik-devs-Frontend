@@ -1,5 +1,5 @@
-import Header from "./defaultlayout/Header/page";
-import Footer from "./defaultlayout/Footer/page";
+import Header from "./web/defaultlayout/Header/page";
+import Footer from "./web/defaultlayout/Footer/page";
 
 export const metadata = {
   title: "Hello. ik-dev",
@@ -31,8 +31,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             //background: "conic-gradient(#00c6ff, #0072ff, #00c6ff)"
             //
             //background: "conic-gradient(#f0f0f0, #124dbf, #f0f0f0)"
-            background: "radial-gradient(circle at 50% 50%,  #124dbf, #d9f1ff, #124dbf)"
-
+            //background: "radial-gradient(circle at 50% 50%,  #124dbf, #d9f1ff, #124dbf)",
+            //background: "radial-gradient(circle at 50% 50%,  #464646, #000000)",
+            background: "radial-gradient(circle at 50% 50%,  #464646, #2e2e2e, #464646)",
+            //backgroundImage: "url('/image/ubcbeach.jpg')", backgroundSize: "cover",
+            //backgroundImage: "url('/image/20260318_010648053.jpg')", backgroundSize: "cover",
+            
+            
           }}
         />
 
@@ -52,7 +57,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               flex: 1,
               minHeight: 0,
               height: "100%",
-              padding: "16px",
+              padding: "1%",
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",

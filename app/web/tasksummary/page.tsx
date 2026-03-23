@@ -87,9 +87,8 @@ export default function Page() {
         }
 
         let json = await res.json();
-        console.log(json.data);
+        //console.log(json.data);
         json.data = base64decoding_contents(json.data);
-        console.log(json.data);
         // const content_encoded = Buffer.from(content, "utf8").toString("base64");
         // const decoded = Buffer.from(apiresult, "base64").toString("utf8");
         // console.log(decoded);
@@ -332,8 +331,8 @@ export default function Page() {
   // ===== 데이터 저장 =====
   const onSave = async () => {
     try {
-      console.log(base64encoding_yearcontents(yearGroups));
-      console.log(base64encoding_projectcontents(projects));
+      //console.log(base64encoding_yearcontents(yearGroups));
+      //console.log(base64encoding_projectcontents(projects));
       //return;
       
       //base64decoding_contents
@@ -388,7 +387,7 @@ export default function Page() {
         
         <div className={styles.title}>
           <h1>프로젝트</h1>
-          <p>좌측: 연도별 / 우측: 수행 프로젝트</p>
+          <p>좌측: 연도별 / 우측: 프로젝트별</p>
           <p>추가 또는 수정 후 우측 상단 저장버튼을 눌러야 저장됩니다.</p>
         </div>
         <button className={styles.savebutton} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } onSave(); }}>
@@ -488,7 +487,7 @@ export default function Page() {
         {/* RIGHT: 수행 프로젝트 */}
         <section className={styles.card}>
           <div className={styles.hd}>
-            <div className={styles.h}>수행 프로젝트</div>
+            <div className={styles.h}>프로젝트별</div>
             <div className={styles.badge}>{visibleProjects.length}</div>
           </div>
 
@@ -496,8 +495,6 @@ export default function Page() {
             <div className={styles.list}>
               {visibleProjects.map((p, i) => (
                 <article key={p.id} className={styles.item}>
-                  <div className={styles.idx}>{i + 1}</div>
-
                   <div className={styles.meta}>
                     <input
                       className={styles.projectTitleInput}
