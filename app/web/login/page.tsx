@@ -61,7 +61,8 @@ export default function Page() {
       switch (loginresult.result) 
       {
         case "ok":
-          router.push("/web/main");
+          router.push("/web/wpage/viewpage/introduction");
+          //router.push("/web/main");
           break;
         case "id_not_exist":
           toast.error("존재하지 않는 아이디입니다 : " + loginresult.id);
@@ -77,14 +78,14 @@ export default function Page() {
           sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
           setTimeout(() => {
             router.push('/web/login/otpcreate');
-          }, 2000);
+          }, 1000);
           break;
         case "otp_verify":
           toast.info("OTP 인증요청");
           sessionStorage.setItem('loginresult', JSON.stringify(loginresult));
           setTimeout(() => {
             router.push('/web/login/otplogin');
-          }, 2000);
+          }, 1000);
           break;
         default:
           toast.error("알 수 없는 에러입니다. 관리자에게 문의해주세요");
@@ -120,7 +121,7 @@ export default function Page() {
 
         <div className={styles.header}>
           <div className={styles.title}>
-            RS<span className={styles.titleAccent}>Board</span>
+            <span className={styles.titleAccent}>Dae Ik Board</span>
           </div>
           <div className={styles.subtitle}>로그인하여 계속하세요</div>
         </div>
@@ -160,12 +161,7 @@ export default function Page() {
 
         <hr className={styles.divider} />
 
-        <div className={styles.footer}>
-          RSBoard v1.0 · Authorized access only
-        </div>
-
         <div>
-          <br/>
           * 방문용 계정 <br/>
             &nbsp;&nbsp;&nbsp;접속정보 : guest / 1234 <br/>
           * 방문용 계정(구글OTP 테스트 포함) <br/>

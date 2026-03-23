@@ -70,7 +70,8 @@ export default function OtpSetup() {
       switch (result_GoogleOTPLogin.result) 
       {
         case "ok":
-          router.push("/web/main");
+          router.push("/web/wpage/viewpage/introduction");
+          //router.push("/web/main");
           break;
         case "fail":
           toast.error("아이디와 비밀번호가 일치하지 않습니다. 현재 로그인 시도횟수 카운트 : "+result_GoogleOTPLogin.LoginFailcount);
@@ -99,7 +100,8 @@ export default function OtpSetup() {
           <div className={styles.title}>
             RS<span className={styles.titleAccent}>Board</span>
           </div>
-          <div className={styles.subtitle}>OTP코드를 입력하여 로그인해주세요</div>
+          <div className={styles.subtitle}>구글 OTP코드를 입력하여 로그인해주세요</div>
+          <div className={styles.subtitle}>(Google Authenticator 앱)</div>
         </div>
 
         <div className={styles.fieldGroup}>
@@ -115,16 +117,17 @@ export default function OtpSetup() {
             onKeyDown={(e) => e.key === "Enter" && otplogin()}
           />
         </div>
-
-        <button className={styles.btn} onClick={() => otplogin()}>
+        <div className={styles.centeralign}>
+          <button className={styles.btn} onClick={() => otplogin()}>
           로그인
-        </button>
+          </button>
+          <button className={styles.btn_back} onClick={() => router.push("/")}>
+            뒤로가기
+          </button>
+        </div>
+        
 
         <hr className={styles.divider} />
-
-        <div className={styles.footer}>
-          RSBoard v1.0 · Authorized access only
-        </div>
 
       </div>
     </main>
