@@ -122,7 +122,7 @@ export default function ImageUploadPage() {
     //현재 브라우저가 로그인된 상태인지 확인. 없으면 로그인 제한
     (async () => {
       const isLoginResult:IsLoginApiData_data = await isLogin();
-      console.log(isLoginResult);
+      //console.log(isLoginResult);
       if(isLoginResult.usertype != "admin")
       {   
         toast.error("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);

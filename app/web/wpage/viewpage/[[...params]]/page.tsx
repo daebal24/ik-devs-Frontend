@@ -113,13 +113,12 @@ export default function Page() {
           2
         ).replace(/^"(.*)"$/, "$1");
 
-        console.log("@@ res : "+apiresult);
         if (json.data[0].id == 0) {
           router.push("/error/notexistwpage");
         }
 
         const decoded = Buffer.from(apiresult, "base64").toString("utf8");
-        console.log(decoded);
+        //console.log(decoded);
         setRaw(decoded);
         setPagememo(api_memo);
         setConfirmedText(decoded);
@@ -148,8 +147,8 @@ export default function Page() {
           }
 
           const json = await res.json();
-          console.log("image here : ");
-          console.log(json);
+          // console.log("image here : ");
+          // console.log(json);
 
           // ✅ 배열 통째로 상태에 저장
           setimagelist(json.data as ViewMediaData[]);

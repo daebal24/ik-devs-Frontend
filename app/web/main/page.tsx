@@ -105,7 +105,7 @@ export default function Page() {
           <div
             key={card.id}
             className={`${styles.card} ${styles[card.id]}`}
-            onClick={() => router.push(card.href)}
+            onClick={() => router.push(card.href as any)}
           >
             <div className={styles.cardTop}>
               <div className={styles.cardTitle}>{card.title}</div>

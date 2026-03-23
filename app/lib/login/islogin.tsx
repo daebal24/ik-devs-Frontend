@@ -23,7 +23,7 @@ export default async function isLogin()
         }
 
         let apiresult:IsLoginApiData = await res.json()
-        console.log("세션 응답:", apiresult);
+        //console.log("세션 응답:", apiresult);
         result = apiresult.data;
         //console.log("document.cookie:", document.cookie);
         return result;

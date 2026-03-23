@@ -31,9 +31,6 @@ export default function OtpSetup() {
     }
 
     setloginresult(JSON.parse(raw));
-    console.log(raw);
-    console.log(JSON.parse(raw));
-    console.log(loginresult);
     sessionStorage.removeItem('otpData');  // 읽자마자 삭제
   }, []);
 

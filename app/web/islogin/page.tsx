@@ -50,8 +50,8 @@ export default function SessionCheckPage() {
 
       const data = await res.json();
 
-      console.log("세션 응답:", data);
-      console.log("document.cookie:", document.cookie);
+      //console.log("세션 응답:", data);
+      //console.log("document.cookie:", document.cookie);
 
       setResult(data);
     } catch (err) {

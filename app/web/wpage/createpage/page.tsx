@@ -72,7 +72,6 @@ export default function Page() {
         } 
         else {
           const save_result = await res.json();
-          console.log();
           if(save_result.data.raw == "Success")
           {
             toast.success("저장 완료");

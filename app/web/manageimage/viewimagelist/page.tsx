@@ -73,8 +73,6 @@ export default function Page() {
           }
 
           const json = await res.json();
-          console.log("here : ");
-          console.log(json);
 
           // 배열 통째로 상태에 저장
           setRaw(json.data as ViewMediaData[]);

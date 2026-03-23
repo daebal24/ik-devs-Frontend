@@ -29,7 +29,7 @@ export default function Page() {
           }),
         });
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-        console.log(res);
+        //console.log(res);
       } catch (e) {
         throw new Error(`Request failed: ${(e as Error).message}`);
       }
@@ -56,7 +56,7 @@ export default function Page() {
       const text = await res.text();
       const json = JSON.parse(text);
       const loginresult = json.data;
-      console.log(loginresult);
+      //console.log(loginresult);
 
       switch (loginresult.result) 
       {

@@ -65,7 +65,7 @@ export default function Page() {
     : raw.filter((item) => {
         try {
           const decoded = Buffer.from(item.content, "base64").toString("utf8");
-          console.log(decoded);
+          //console.log(decoded);
           return decoded.includes(searchKeyword.trim());
         } catch {
           return false;
@@ -110,8 +110,8 @@ export default function Page() {
           }
 
           const json = await res.json();
-          console.log("here : ");
-          console.log(json);
+          // console.log("here : ");
+          // console.log(json);
 
           // 배열 통째로 상태에 저장
           setRaw(json.data as viewPageData[]);
