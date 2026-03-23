@@ -5,5 +5,5 @@
 - npm v9+ (or pnpm/yarn if you prefer—update commands accordingly)
 
 ## Getting Started
-npm install
-npm run dev
+- npm install
+- npm run dev
