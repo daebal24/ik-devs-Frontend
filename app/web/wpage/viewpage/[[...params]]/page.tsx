@@ -241,7 +241,6 @@ export default function Page() {
       )}
 
       {/* 미리보기 / 결과 */}
-      <p>추가 또는 수정 후 우측 상단 저장버튼을 눌러야 저장됩니다.</p>
       <section
         aria-label="미리보기"
         style={{
@@ -303,9 +302,17 @@ export default function Page() {
           입력 중에도 아래 “결과” 영역에서 실시간으로 렌더링을 확인할 수 있습니다.
         </p>
       )}
-      <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
-        커스텀 마크다운 지원목록
-      </h1>
+      <br></br>
+      <div style={{
+          width: "40%",
+          border: "1px dotted #b4b4b4",
+          borderRadius: 10,
+          padding: 16,
+          background: "#ffffffde"
+        }}>
+        <h1 style={{ fontSize: 18, fontWeight: 700, marginTop:1, marginBottom: 8 }}>
+          커스텀 마크다운 지원목록
+        </h1>
       <details >
         <p style={{ opacity: 0.7, marginBottom: 16 }}>
           지원목록: <br />
@@ -324,6 +331,8 @@ export default function Page() {
           업로드된 파일 : [file:파일태그] <br />
         </p>
       </details >
+      </div>
+      
     </main>
   );
 }

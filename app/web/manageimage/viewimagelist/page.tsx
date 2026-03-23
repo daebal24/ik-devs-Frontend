@@ -18,18 +18,6 @@ type ViewMediaData=
   filetype:string;
 }
 
-function imagelist(input:ViewMediaData[])
-{
-  console.log(input);
-
-  //정보가 담긴 배열을 넘겨받으면 앨범생성
-  const items = [];
-  for (let i = 0; i < input.length; i++) {
-    items.push(<div className={`${styles.card}`}><img src="" />{input[i].name}</div>);
-  }
-  return <div>{items}</div>;
-}
-
 //페이지 view단
 export default function Page() {
   const router = useRouter();
@@ -105,7 +93,7 @@ export default function Page() {
     <main className={styles.mainWrapper}>
       <ToastContainer position="top-center" autoClose={3000} />
       <div className={styles.toolbar}>
-        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } router.push("/web/manageimage/uploadimage"); }}>이미지 업로드</button>
+        <button className={styles.topBtn} onClick={() => { if (!isAdmin) { toast.error("허용되지 않는 사용자입니다."); return; } router.push("/web/manageimage/uploadimage"); }}>파일 업로드</button>
       </div>
       <div className={styles.gridContainer}>
         {loading && <div className={styles.loading}>로딩 중...</div>}

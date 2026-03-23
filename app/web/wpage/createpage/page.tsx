@@ -117,7 +117,7 @@ export default function Page() {
       {
         toast.error("접근 권한이 없습니다. 현재 유저타입 : "+isLoginResult.usertype);
         setTimeout(() => {
-            router.push("/web/main");
+            router.push("/web/wpage/managepage");
           }, 1000);
         return;        
       }
