@@ -56,6 +56,20 @@
   background: rgba(0, 94, 115, 0.75);
 }
 
+.aisearchBtn {
+  padding: 9px 16px;
+  font-size: 13px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 200, 200, 0.35);
+  background: rgba(6, 22, 160, 0.5);
+  color: #ffffff;
+  cursor: pointer;
+}
+.aisearchBtn:hover {
+  background: rgba(6, 22, 160, 0.75);
+}
+
+
 .searchClearBtn {
   padding: 9px 12px;
   font-size: 13px;

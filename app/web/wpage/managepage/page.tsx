@@ -113,7 +113,7 @@ export default function Page() {
           console.log("here : ");
           console.log(json);
 
-          // ✅ 배열 통째로 상태에 저장
+          // 배열 통째로 상태에 저장
           setRaw(json.data as viewPageData[]);
         } catch (e) {
           setError((e as Error).message);
@@ -143,6 +143,7 @@ export default function Page() {
           {searchKeyword.trim() !== "" && (
             <button className={styles.searchClearBtn} onClick={() => { setSearchInput(""); setSearchKeyword(""); }}>✕</button>
           )}
+          <a href="/web/aichat" target="_blank"><button className={styles.aisearchBtn}>AI 채팅</button></a>
         </div>
       </div>
       <div className={styles.gridContainer}>
