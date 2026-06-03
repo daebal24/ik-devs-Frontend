@@ -1,10 +1,16 @@
-// app/api/route.ts
+// app/api/commonapi/route.ts
 import { NextResponse } from "next/server";
 
+const TOKEN_COOKIE_MAX_AGE = 60 * 60 * 8; // 8시간 (백엔드 JWT 만료와 동일)
+
+function extractJwtFromCookies(cookieHeader: string): string | null {
+  const match = cookieHeader.match(/(?:^|;\s*)authToken=([^;]+)/);
+  return match ? match[1] : null;
+}
+
 export async function POST(request: Request) {
-  try 
-  {
-    // 1) 요청 파싱 (JSON이 아니어도 안전하게)
+  try {
+    // 1) 요청 파싱
     const ctype = request.headers.get("content-type") || "";
     let apiname = "";
     let bodydata: any = {};
@@ -19,17 +25,17 @@ export async function POST(request: Request) {
       }
     }
 
-    //브라우저가 보낸 쿠키를 읽어서 백엔드로 전달
-    const incomingCookie = request.headers.get("cookie") || "";
+    // 2) 브라우저 쿠키에서 JWT 추출 → Authorization 헤더로 변환
+    const incomingCookies = request.headers.get("cookie") || "";
+    const jwtToken = extractJwtFromCookies(incomingCookies);
 
-    // 2) 스프링 백엔드 호출
+    // 3) 스프링 백엔드 호출
     const apiURL = `${process.env.BACKENDAPI}/api/${apiname}`;
     const res = await fetch(apiURL, {
       method: "POST",
-      credentials: "include", // 중요 (세션 쿠키 포함)
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
-        ...(incomingCookie ? { Cookie: incomingCookie } : {}), // 쿠키 전달
+        ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),
       },
       body: JSON.stringify(bodydata),
       cache: "no-store",
@@ -39,44 +45,46 @@ export async function POST(request: Request) {
       throw new Error(`백엔드 응답 오류: ${res.status}`);
     }
 
-    // 3) 핵심: JSON 대신 text로 받고, 직접 안전 파싱, 
-    // 백엔드가 내려준 Set-Cookie를 브라우저 응답으로 전달
+    // 4) 응답 파싱
     const backendText = await res.text();
-    const setCookie = res.headers.get("set-cookie") || "";
-
-    // BOM 제거 + 앞뒤 공백 제거
-    const sanitized = backendText.replace(/^\uFEFF/, "").trim();
+    const sanitized = backendText.replace(/^﻿/, "").trim();
 
     let data: any;
     try {
-      // (가끔 JSON 뒤에 쓰레기 문자가 붙는 백엔드 대비: 닫는 괄호까지 자르기)
-      // 객체/배열의 마지막 닫힘을 찾아서 그 이전만 시도
       const lastBrace = Math.max(sanitized.lastIndexOf("}"), sanitized.lastIndexOf("]"));
       const maybeJson = lastBrace >= 0 ? sanitized.slice(0, lastBrace + 1) : sanitized;
       data = JSON.parse(maybeJson);
     } catch {
-      // JSON이 아니면 raw 텍스트로 전달
       data = { raw: sanitized };
     }
 
-
-    //프론트 화면으로 최종 응답 보냄
     const out = NextResponse.json(
       { ok: true, message: "백엔드 데이터 정상 수신", data },
       { status: 200 }
     );
 
-    if (setCookie) {
-      // set-cookie는 여러 개일 수 있는데, 우선 1개인 경우가 대부분이라 이대로도 동작.
-      // 로그인 시 쿠키가 여러 개 내려오는 경우 res.headers.get("set-cookie")가 합쳐져서 올 수 있음
-      // 그때는 set-cookie를 분리해서 여러 개로 붙여야 하는데, 지금 단계에선 대부분 JSESSIONID 1개라 위 코드로도 충분
-      out.headers.set("set-cookie", setCookie);
+    // 5) 로그인 성공 시 JWT를 HttpOnly 쿠키로 저장
+    if (
+      (apiname === "login" || apiname === "GoogleOTPLogin") &&
+      data?.result === "ok" &&
+      data?.token
+    ) {
+      out.headers.set(
+        "set-cookie",
+        `authToken=${data.token}; HttpOnly; Path=/; SameSite=Strict; Max-Age=${TOKEN_COOKIE_MAX_AGE}`
+      );
     }
-    return out;
 
-  } 
-  catch (err: any) 
-  {
+    // 6) 로그아웃 시 JWT 쿠키 삭제
+    if (apiname === "deleteLoginSession") {
+      out.headers.set(
+        "set-cookie",
+        `authToken=; HttpOnly; Path=/; SameSite=Strict; Max-Age=0`
+      );
+    }
+
+    return out;
+  } catch (err: any) {
     console.error("API fetch 실패:", err);
     return new Response(
       JSON.stringify({ ok: false, error: String(err?.message || err) }),
