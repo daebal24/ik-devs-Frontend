@@ -34,6 +34,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState("");
+  const [deletingFile, setDeletingFile] = useState<string | null>(null);
 
   // ✅ 페이지가 렌더링되면 자동으로 한 번 API 호출
     useEffect(() => 
@@ -86,6 +87,33 @@ export default function Page() {
       fetchData();
     }, []);
 
+  async function handleDelete(filename: string) {
+    if (!window.confirm(`"${filename}" 파일을 삭제하시겠습니까?`)) return;
+
+    setDeletingFile(filename);
+    try {
+      const res = await fetch("/api/commonapi", {
+        method: "POST",
+        cache: "no-store",
+        body: JSON.stringify({
+          apiname: "deleteMediaData",
+          bodydata: { filename },
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok || json.data?.ok === false) {
+        toast.error("삭제 실패: " + (json.data?.message ?? json.error));
+        return;
+      }
+      setRaw((prev) => prev.filter((item) => item.filename !== filename));
+      toast.success("삭제되었습니다.");
+    } catch (e) {
+      toast.error("삭제 중 오류가 발생했습니다.");
+    } finally {
+      setDeletingFile(null);
+    }
+  }
+
 
     return (
     <main className={styles.mainWrapper}>
@@ -129,6 +157,15 @@ export default function Page() {
                       )
                   }
                   <div className={styles.cardName}>{item.name}</div>
+                  {isAdmin && (
+                    <button
+                      className={styles.deleteBtn}
+                      onClick={() => handleDelete(item.filename)}
+                      disabled={deletingFile === item.filename}
+                    >
+                      {deletingFile === item.filename ? "삭제 중..." : "삭제"}
+                    </button>
+                  )}
                 </div>
               );
             })}

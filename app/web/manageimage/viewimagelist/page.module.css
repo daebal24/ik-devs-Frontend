@@ -69,3 +69,25 @@
   color: #aaaaaa;
   font-size: 14px;
 }
+
+.deleteBtn {
+  width: 100%;
+  padding: 7px 0;
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(220, 80, 80, 0.5);
+  background: rgba(180, 40, 40, 0.2);
+  color: #f08080;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.deleteBtn:hover:not(:disabled) {
+  background: rgba(180, 40, 40, 0.45);
+  color: #ffffff;
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

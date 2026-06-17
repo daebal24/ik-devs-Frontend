@@ -67,7 +67,7 @@ export default function OtpSetup() {
       switch (result_GoogleOTPLogin.result) 
       {
         case "ok":
-          router.push("/web/wpage/viewpage/introduction");
+          router.push("/web/wpage/vpd/frontpage");
           //router.push("/web/main");
           break;
         case "fail":

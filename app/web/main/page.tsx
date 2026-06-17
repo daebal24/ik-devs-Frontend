@@ -21,7 +21,7 @@ const CARDS = [
         <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
       </svg>
     ),
-    href: "/web/wpage/viewpage/introduction",
+    href: "/web/wpage/vpd/frontpage",
   },
   {
     id: "card2",

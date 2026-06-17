@@ -143,7 +143,7 @@ export default function Page() {
           {searchKeyword.trim() !== "" && (
             <button className={styles.searchClearBtn} onClick={() => { setSearchInput(""); setSearchKeyword(""); }}>✕</button>
           )}
-          <a href="/web/aichat" target="_blank"><button className={styles.aisearchBtn}>AI 채팅</button></a>
+          {/* <a href="/web/aichat" target="_blank"><button className={styles.aisearchBtn}>AI 채팅</button></a> */}
         </div>
       </div>
       <div className={styles.gridContainer}>

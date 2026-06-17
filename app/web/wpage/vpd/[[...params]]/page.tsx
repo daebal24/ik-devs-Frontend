@@ -97,9 +97,9 @@ export default function Page() {
 
       <div className={styles.header}>
         {/* <h2 className={styles.title}>{pagememo || "PDF 문서"}</h2> */}
-        <h2 className={styles.title}>
+        {/* <h2 className={styles.title}>
           <a href={pdfUrl} target='_blank' download>PDF 다운로드</a>
-        </h2>
+        </h2> */}
       </div>
 
       <div className={styles.viewerWrapper} ref={containerRef}>

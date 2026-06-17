@@ -9,9 +9,9 @@ import styles from "./page.module.css";
 const HIDE_HEADER_PATHS = ["/web/login"];
 
 const NAV_ITEMS = [
-  { label: "소개",              path: "/web/wpage/viewpage/introduction" },
+  { label: "소개",              path: "/web/wpage/vpd/frontpage" },
   { label: "업무요약",          path: "/web/tasksummary" },
-  { label: "문서목록 / AICHAT", path: "/web/wpage/managepage" },
+  { label: "문서목록", path: "/web/wpage/managepage" },
   { label: "미디어 파일",       path: "/web/manageimage/viewimagelist" },
   { label: "로그아웃",          path: "/web/login" },
 ];

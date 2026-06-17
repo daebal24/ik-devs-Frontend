@@ -26,7 +26,7 @@ export default function PdfRenderer({ pdfUrl, containerWidth, statusClass, statu
       file={pdfUrl}
       onLoadSuccess={({ numPages }) => setNumPages(numPages)}
       onLoadError={(e) => setLoadError(e.message)}
-      loading={<p className={statusClass}>PDF 로딩 중...</p>}
+      loading={<p className={statusClass}>Page 로딩 중...</p>}
     >
       {Array.from({ length: numPages }, (_, i) => (
         <PdfPage

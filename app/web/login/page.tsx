@@ -61,7 +61,7 @@ export default function Page() {
       switch (loginresult.result) 
       {
         case "ok":
-          router.push("/web/wpage/viewpage/introduction");
+          router.push("/web/wpage/vpd/frontpage");
           //router.push("/web/main");
           break;
         case "id_not_exist":
