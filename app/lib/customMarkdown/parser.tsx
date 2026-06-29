@@ -122,7 +122,11 @@ function findMatchingCloseForBox(fullText: string, fromIndex: number) {
   return null;
 }
 
-export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []): React.ReactNode[] {
+export type ParseOptions = {
+  aoutClassName?: string;
+};
+
+export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = [], opts: ParseOptions = {}): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
   let text = src;
 
@@ -158,26 +162,28 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
     const fontOpenRe = /\[font([^\]]*)\]/i;
     const commentOpenRe = /\[comment([^\]]*)\]/i;
     const a_pageOpenRe = /\[a_page:([^\]]+)\]/i;
+    const a_pagevpdOpenRe = /\[a_pagevpd:([^\]]+)\]/i;
     const imgOpenRe = /\[img:([^\]\s]+)([^\]]*)\]/i;
     const aoutOpenRe = /\[aout:([^\]]+)\]/i;
     const fileOpenRe = /\[file:([^\]]+)\]/i;
-    
 
     const boxIndex = text.search(boxOpenRe);
     const fontIndex = text.search(fontOpenRe);
     const commentIndex = text.search(commentOpenRe);
     const a_pageIndex = text.search(a_pageOpenRe);
+    const a_pagevpdIndex = text.search(a_pagevpdOpenRe);
     const imgIndex = text.search(imgOpenRe);
     const aoutIndex = text.search(aoutOpenRe);
-    const fileIndex =text.search(fileOpenRe);
+    const fileIndex = text.search(fileOpenRe);
 
-    if (boxIndex === -1 && fontIndex === -1 && commentIndex === -1 && a_pageIndex === -1 && imgIndex === -1 && aoutIndex === -1 && fileIndex == -1) return null;
+    if (boxIndex === -1 && fontIndex === -1 && commentIndex === -1 && a_pageIndex === -1 && a_pagevpdIndex === -1 && imgIndex === -1 && aoutIndex === -1 && fileIndex === -1) return null;
 
     const candidates = [
       { type: "box" as const, index: boxIndex },
       { type: "font" as const, index: fontIndex },
       { type: "comment" as const, index: commentIndex },
       { type: "a_page" as const, index: a_pageIndex },
+      { type: "a_pagevpd" as const, index: a_pagevpdIndex },
       { type: "img" as const, index: imgIndex },
       { type: "aout" as const, index: aoutIndex },
       { type: "file" as const, index: fileIndex },
@@ -221,6 +227,27 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
 
       return {
         type: "a_page" as const,
+        before: text.slice(0, start),
+        inside: text.slice(insideStart, insideEnd),
+        after: text.slice(insideEnd + closeMatch[0].length),
+        url,
+      };
+    }
+
+    if (next.type === "a_pagevpd") {
+      const open = text.match(a_pagevpdOpenRe)!;
+      const start = open.index ?? 0;
+      const url = open[1] ?? "";
+      const afterOpen = start + open[0].length;
+
+      const closeMatch = text.slice(afterOpen).match(/\[\/a_pagevpd\]/i);
+      if (!closeMatch) return null;
+
+      const insideStart = afterOpen;
+      const insideEnd = afterOpen + (closeMatch.index ?? 0);
+
+      return {
+        type: "a_pagevpd" as const,
         before: text.slice(0, start),
         inside: text.slice(insideStart, insideEnd),
         after: text.slice(insideEnd + closeMatch[0].length),
@@ -347,11 +374,35 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
               textDecorationStyle:"solid",
             }}
           >
-            {parseCustomMarkdown(m.inside, imageMap)}
+            {parseCustomMarkdown(m.inside, imageMap, opts)}
           </a>
         );
       } else {
-        nodes.push(<React.Fragment key={`a_page-bad-${nodes.length}`}>{parseCustomMarkdown(m.inside, imageMap)}</React.Fragment>);
+        nodes.push(<React.Fragment key={`a_page-bad-${nodes.length}`}>{parseCustomMarkdown(m.inside, imageMap, opts)}</React.Fragment>);
+      }
+      text = m.after;
+      continue;
+    }
+
+    if (m.type === "a_pagevpd") {
+      const newurl = "/web/wpage/vpd/"+m.url;
+      if (newurl) {
+        nodes.push(
+          <a
+            key={`a_pagevpd-${nodes.length}`}
+            href={newurl}
+            rel="noopener noreferrer"
+            style={{
+              color:"inherit",
+              textDecorationLine:"underline",
+              textDecorationStyle:"solid",
+            }}
+          >
+            {parseCustomMarkdown(m.inside, imageMap, opts)}
+          </a>
+        );
+      } else {
+        nodes.push(<React.Fragment key={`a_pagevpd-bad-${nodes.length}`}>{parseCustomMarkdown(m.inside, imageMap, opts)}</React.Fragment>);
       }
       text = m.after;
       continue;
@@ -403,13 +454,17 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
             href={safe}
             target="_blank"
             rel="noopener noreferrer"
-            // className={opts.aoutClassName}
+            className={opts?.aoutClassName}
+            style= {{
+              textDecoration: "none", /* 밑줄 제거 */
+              color: "inherit"         /* 파란색 대신 부모 요소의 글자색을 그대로 상속 */
+            }}
           >
-            {parseCustomMarkdown(m.inside, imageMap)}
+            {parseCustomMarkdown(m.inside, imageMap, opts)}
           </a>
         );
       } else {
-        nodes.push(<React.Fragment key={`aout-bad-${nodes.length}`}>{parseCustomMarkdown(m.inside, imageMap)}</React.Fragment>);
+        nodes.push(<React.Fragment key={`aout-bad-${nodes.length}`}>{parseCustomMarkdown(m.inside, imageMap, opts)}</React.Fragment>);
       }
       text = m.after;
       continue;
@@ -440,7 +495,7 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
             maxHeight: box.maxHeight,
           }}
         >
-          {parseCustomMarkdown(m.inside, imageMap)}
+          {parseCustomMarkdown(m.inside, imageMap, opts)}
         </div>
       );
       text = m.after;
@@ -458,7 +513,7 @@ export function parseCustomMarkdown(src: string, imageMap: ImageMapItem[] = []):
           lineHeight: 1.5,
         }}
       >
-        {parseCustomMarkdown(m.inside, imageMap)}
+        {parseCustomMarkdown(m.inside, imageMap, opts)}
       </span>
     );
     text = m.after;
